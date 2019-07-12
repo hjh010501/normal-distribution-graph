@@ -231,7 +231,7 @@
 
 
     function ndfun(avg, sd, x){
-        return (1 / Math.sqrt(2 * Math.PI * Math.pow(sd, 2))) * Math.pow(Math.E, -1/2 * Math.pow((x - avg) * sd , 2));
+        return (1 / (Math.sqrt(2 * Math.PI) * sd)) * Math.pow(Math.E, -1/2 * Math.pow((x - avg) / sd , 2));
     }
     function DrawGraph(number) {
       RemoveGraph(number)
@@ -247,7 +247,7 @@
         return ndfun(avg, sd, x)
       }, color, 2)
       // Integral area selector
-      grapharray[number].drawRects(grapharray[number].scaleX * 0, grapharray[number].scaleX * 200, 0.001, function(x) { return grapharray[number].scaleY * ndfun(avg, sd, x)})
+      grapharray[number].drawRects(grapharray[number].scaleX * 0, grapharray[number].scaleX * 200, 0.1, function(x) { return grapharray[number].scaleY * ndfun(avg, sd, x)})
       $("#function"+ (number + 1)).css("background-color", color)
     }
 
