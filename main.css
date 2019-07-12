@@ -114,6 +114,12 @@ h2 {
     margin-left: 20px;
 }
 
+.function-area {
+    position: fixed;
+    width: 300px;
+    bottom: 0;
+}
+
 
 .deletefunction {
     height: 50px;

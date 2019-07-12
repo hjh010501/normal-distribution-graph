@@ -16,6 +16,10 @@
       <div id="canvass">
         <canvas id="myCanvas" width="1920" height="1080"></canvas>
       </div>
+      <div class="function-area">
+        <input type="text" id="start" name="start" class="textbox" placeholder="시작"/>
+        <input type="text" id="end" name="end" class="textbox" placeholder="끝"/>
+      </div>
       <div class="functions">
         <div style="margin-top: 17.5px;" class="row1">
             <input type="text" id="avg1" name="avg1" class="textbox" placeholder="평균"/>
@@ -247,8 +251,9 @@
         return ndfun(avg, sd, x)
       }, color, 2)
       // Integral area selector
-      grapharray[number].drawRects(grapharray[number].scaleX * 0, grapharray[number].scaleX * 200, 0.1, function(x) { return grapharray[number].scaleY * ndfun(avg, sd, x)})
-      $("#function"+ (number + 1)).css("background-color", color)
+      grapharray[number].drawRects(grapharray[number].scaleX * parseFloat($('#start').val()), grapharray[number].scaleX * parseFloat($('#end').val()), 0.1, function(x) { return grapharray[number].scaleY * ndfun(avg, sd, x)})
+      $("#avg"+ (number + 1)).css("background-color", color)
+      $("#sd"+ (number + 1)).css("background-color", color)
     }
 
     function RemoveGraph(number) {
