@@ -24,7 +24,9 @@
         <div style="margin-top: 17.5px;" class="row1">
             <input type="text" id="avg1" name="avg1" class="textbox" placeholder="평균"/>
             <input type="text" id="sd1" onchange="DrawGraph(0)" name="sd1" class="textbox" placeholder="표준편차"/>
+            <div class="result-text result1" id="result1"></div>
             <div class="deletefunction">❌</div>
+            
         </div>
     </div>
       <input onclick="javascript: AddGraph()" style="right: 0; margin-right: 20px; background-color: #eee; color: #000; " type="button" class="button ripple" value="함수추가"/>
@@ -160,15 +162,15 @@
       for(var i = start; i <= end; i+=step) {
         context.rect(this.centerX + i, this.centerY, step, -func(i / this.scaleX));
       }
-      for(var j = start / this.scaleX; j <= end / this.scaleX; j += step) {
+      for(var j = start / this.scaleX; j < end / this.scaleX; j += step) { // this.scaleX 로 나누는 이유는 그래프 크기를 확대시켰기 때문입니다.
         console.log(step + " * " +j + " = " + result)
         result += step * (func(j) / this.scaleY)
       }
       context.lineWidth = 0.03;
       context.strokeStyle = this.graphcolor
       context.stroke();
-      result = result.toFixed(0)
-      console.log(result)
+      result = result.toFixed(4)
+      return result;
     }
 
     Graph.prototype.drawEquation = function(equation, color, thickness) {
@@ -219,6 +221,7 @@
       $('.functions').append(`<div style="margin-top: 17.5px;" class="row${i}">
                               <input type="text" id="avg${i}" name="avg${i}" class="textbox" placeholder="평균"/>
                               <input type="text" id="sd${i}" onchange="DrawGraph(${i - 1}, ${$("#function" + i).val()})" name="sd${i}" class="textbox" placeholder="표준편차"/>
+                              <div class="result-text result${i}" id="result${i}"></div>
                               <div onclick="removeFunction(${i})" class="deletefunction">❌</div></div>`);
       grapharray.push(new Graph({canvasId: 'myCanvas' + i, minX: -10, minY: -1/2, maxX: 10, maxY: 0.1, unitsPerTick: 1, graphcolor: getRandomColor(), drawaxis: false}))
       console.log(grapharray)
@@ -251,9 +254,10 @@
         return ndfun(avg, sd, x)
       }, color, 2)
       // Integral area selector
-      grapharray[number].drawRects(grapharray[number].scaleX * parseFloat($('#start').val()), grapharray[number].scaleX * parseFloat($('#end').val()), 0.1, function(x) { return grapharray[number].scaleY * ndfun(avg, sd, x)})
+      var size = grapharray[number].drawRects(grapharray[number].scaleX * parseFloat($('#start').val()), grapharray[number].scaleX * parseFloat($('#end').val()), 0.1, function(x) { return grapharray[number].scaleY * ndfun(avg, sd, x)})
       $("#avg"+ (number + 1)).css("background-color", color)
       $("#sd"+ (number + 1)).css("background-color", color)
+      $("#result" + (number + 1)).text(size)
     }
 
     function RemoveGraph(number) {
